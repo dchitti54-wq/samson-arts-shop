@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samson Arts | Online Art Shop</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: Arial, sans-serif;
+    background: #f1f3f6;
+    color: #222;
+}
+header {
+    background: #172337;
+    color: white;
+    padding: 15px;
+}
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.logo {
+    font-size: 21px;
+    font-weight: bold;
+    color: #ffd54f;
+}
+.search {
+    display: flex;
+    margin-top: 14px;
+    gap: 5px;
+}
+.search input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 0;
+    border-radius: 5px;
+    font-size: 15px;
+}
+button {
+    border: 0;
+    border-radius: 5px;
+    padding: 10px 13px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.search button {
+    background: #ffd54f;
+}
+.hero {
+    margin: 12px;
+    padding: 25px 18px;
+    background: linear-gradient(120deg,#252d47,#66509b);
+    color: white;
+    border-radius: 10px;
+}
+.hero h1 {
+    font-size: 27px;
+    margin-bottom: 10px;
+}
+.hero p {
+    line-height: 1.6;
+}
+.hero button {
+    margin-top: 15px;
+    background: #ffd54f;
+}
+h2 {
+    margin: 20px 12px 12px;
+    font-size: 20px;
+}
+.categories {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px 12px 15px;
+}
+.category {
+    min-width: 105px;
+    text-align: center;
+    padding: 15px 8px;
+    background: white;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+.category span {
+    display: block;
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+.products {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 12px;
+    padding: 0 12px 20px;
+}
+.card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    padding-bottom: 12px;
+}
+.art {
+    height: 145px;
+    background: #eee8df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 65px;
+}
+.card h3 {
+    font-size: 15px;
+    margin: 10px;
+}
+.price {
+    color: #147a36;
+    font-weight: bold;
+    margin: 8px 10px;
+}
+.card button {
+    margin: 4px 8px;
+    width: calc(100% - 16px);
+    background: #ffcc40;
+}
+.card .details {
+    background: #172337;
+    color: white;
+}
+.panel {
+    background: white;
+    margin: 12px;
+    padding: 16px;
+    border-radius: 8px;
+}
+.panel p {
+    line-height: 1.7;
+}
+form {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font: inherit;
+}
+form button {
+    background: #16853b;
+    color: white;
+}
+#cartItems p {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+footer {
+    background: #172337;
+    color: white;
+    padding: 22px 12px;
+    text-align: center;
+    line-height: 1.8;
+}
+.hidden {
+    display: none;
+}
+@media(min-width:700px) {
+    .products {
+        grid-template-columns: repeat(4,minmax(0,1fr));
+    }
+    main {
+        max-width: 1100px;
+        margin: auto;
+    }
+    .art {
+        height: 200px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="top">
+        <div class="logo">🎨 SAMSON ARTS</div>
+        <button onclick="showCart()">🛒 Cart <span id="cartCount">0</span></button>
+    </div>
+
+    <div class="search">
+        <input id="searchInput" placeholder="Search portraits and art...">
+        <button onclick="searchArt()">Search</button>
+    </div>
+</header>
+
+<main>
+
+<section class="hero">
+    <h1>Your Photo, My Art ❤️</h1>
+    <p>Handmade portraits created with passion.</p>
+    <p>Choose your favourite art or order a custom portrait!</p>
+    <button onclick="document.getElementById('customOrder').scrollIntoView({behavior:'smooth'})">
+        Order Your Portrait →
+    </button>
+</section>
+
+<h2>Shop by Category</h2>
+
+<div class="categories">
+    <div class="category" onclick="filterArt('all')"><span>🎨</span>All Art</div>
+    <div class="category" onclick="filterArt('Pencil')"><span>✏️</span>Pencil Art</div>
+    <div class="category" onclick="filterArt('Colour')"><span>🖍️</span>Colour Art</div>
+    <div class="category" onclick="filterArt('3D')"><span>📝</span>3D Art</div>
+    <div class="category" onclick="filterArt('Canvas')"><span>🖼️</span>Canvas Art</div>
+</div>
+
+<h2>Explore Our Art</h2>
+
+<div class="products" id="products">
+
+    <article class="card" data-category="Pencil" data-name="Pencil Portrait">
+        <div class="art">✏️</div>
+        <h3>Pencil Portrait</h3>
+        <p class="price">₹300 – ₹500</p>
+        <button onclick="addToCart('Pencil Portrait',300)">Add to Cart</button>
+        <button class="details" onclick="customFor('Pencil Portrait')">Order Custom Art</button>
+    </article>
+
+    <article class="card" data-category="Colour" data-name="A4 Colour Portrait">
+        <div class="art">🎨</div>
+        <h3>A4 Colour Portrait</h3>
+        <p class="price">₹500 – ₹800</p>
+        <button onclick="addToCart('A4 Colour Portrait',500)">Add to Cart</button>
+        <button class="details" onclick="customFor('A4 Colour Portrait')">Order Custom Art</button>
+    </article>
+
+    <article class="card" data-category="3D" data-name="3D Pencil Art">
+        <div class="art">📝</div>
+        <h3>3D Pencil Art</h3>
+        <p class="price">₹300 – ₹500</p>
+        <button onclick="addToCart('3D Pencil Art',300)">Add to Cart</button>
+        <button class="details" onclick="customFor('3D Pencil Art')">Order Custom Art</button>
+    </article>
+
+    <article class="card" data-category="Canvas" data-name="Canvas Portrait">
+        <div class="art">🖼️</div>
+        <h3>Canvas Portrait</h3>
+        <p class="price">₹700 – ₹1200</p>
+        <button onclick="addToCart('Canvas Portrait',700)">Add to Cart</button>
+        <button class="details" onclick="customFor('Canvas Portrait')">Order Custom Art</button>
+    </article>
+
+</div>
+
+<section class="panel hidden" id="cartPanel">
+    <h2>Your Shopping Cart</h2>
+    <div id="cartItems"></div>
+    <h3 id="cartTotal">Total: ₹0</h3>
+    <button onclick="checkout()" style="background:#16853b;color:white;margin-top:12px">
+        Order Through WhatsApp
+    </button>
+</section>
+
+<section class="panel" id="customOrder">
+    <h2>📸 Order Your Custom Portrait</h2>
+    <p>Send your details through WhatsApp to discuss your portrait.</p>
+
+    <form id="orderForm">
+        <input id="customerName" placeholder="Your Name" required>
+        <input id="customerPhone" placeholder="Your Phone Number" type="tel" required>
+        <select id="artType" required>
+            <option value="">Choose Art Type</option>
+            <option>Pencil Portrait</option>
+            <option>A4 Colour Portrait</option>
+            <option>3D Pencil Art</option>
+            <option>Canvas Portrait</option>
+        </select>
+        <textarea id="orderDescription" placeholder="Size, number of people, delivery details..." rows="3" required></textarea>
+        <button type="submit">Send Order to WhatsApp</button>
+    </form>
+</section>
+
+<section class="panel">
+    <h2>👨‍🎨 About Samson Arts</h2>
+    <p>Welcome to Samson Arts! We create handmade pencil portraits, colour portraits, 3D art and canvas portraits with care.</p>
+</section>
+
+</main>
+
+<footer>
+    <h3>🎨 SAMSON ARTS</h3>
+    <p>Your Memories, My Art.</p>
+    <p>Custom portraits made with love.</p>
+</footer>
+
+<script>
+let cart = [];
+
+function addToCart(name, price) {
+    cart.push({name, price});
+    document.getElementById('cartCount').textContent = cart.length;
+    alert(name + ' added to cart!');
+}
+
+function showCart() {
+    const panel = document.getElementById('cartPanel');
+    panel.classList.remove('hidden');
+
+    const items = document.getElementById('cartItems');
+    items.innerHTML = '';
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        total += item.price;
+        const p = document.createElement('p');
+        p.textContent = item.name + ' — ₹' + item.price;
+
+        const remove = document.createElement('button');
+        remove.textContent = 'Remove';
+        remove.style.marginLeft = '8px';
+        remove.onclick = () => {
+            cart.splice(index, 1);
+            showCart();
+            document.getElementById('cartCount').textContent = cart.length;
+        };
+
+        p.appendChild(remove);
+        items.appendChild(p);
+    });
+
+    document.getElementById('cartTotal').textContent = 'Total: ₹' + total;
+    panel.scrollIntoView({behavior:'smooth'});
+}
+
+function checkout() {
+    if (!cart.length) {
+        alert('Your cart is empty!');
+        return;
+    }
+
+    let message = 'Hello Samson Arts! I want to order:\\n';
+    cart.forEach(item => {
+        message += '- ' + item.name + ': ₹' + item.price + '\\n';
+    });
+
+    message += 'Total: ₹' + cart.reduce((sum, item) => sum + item.price, 0);
+    openWhatsApp(message);
+}
+
+function searchArt() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.display = card.dataset.name.toLowerCase().includes(query) ? '' : 'none';
+    });
+}
+
+function filterArt(category) {
+    document.getElementById('searchInput').value = '';
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.style.display = category === 'all' || card.dataset.category === category ? '' : 'none';
+    });
+}
+
+function customFor(type) {
+    document.getElementById('artType').value = type;
+    document.getElementById('customOrder').scrollIntoView({behavior:'smooth'});
+}
+
+function openWhatsApp(message) {
+    const phone = prompt('Enter Samson Arts WhatsApp number with country code (91XXXXXXXXXX):');
+
+    if (!phone || !/^\d{12}$/.test(phone)) {
+        alert('Please enter a valid 12-digit number including 91.');
+        return;
+    }
+
+    window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(message), '_blank');
+}
+
+document.getElementById('orderForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('customerName').value.trim();
+    const customerPhone = document.getElementById('customerPhone').value.trim();
+    const type = document.getElementById('artType').value;
+    const description = document.getElementById('orderDescription').value.trim();
+
+    const message =
+        'Hello Samson Arts! Custom Portrait Order\\n' +
+        'Name: ' + name + '\\n' +
+        'Customer Phone: ' + customerPhone + '\\n' +
+        'Art Type: ' + type + '\\n' +
+        'Details: ' + description;
+
+    openWhatsApp(message);
+});
+</script>
+
+</body>
+</html>
